@@ -13,9 +13,9 @@ router.get('/', (req, res, next) => {
 router.post('/', async (req, res, next) => {
     const {resource_name} = req.body
 
-    const resourceName = await Resources.getResourceByName(resource_name)
+    const alreadyResourceName = await Resources.getResourceByName(resource_name)
 
-    if(resourceName){
+    if(alreadyResourceName){
         res.status(400).json({message: "that resource already exists"})
     }
     else {

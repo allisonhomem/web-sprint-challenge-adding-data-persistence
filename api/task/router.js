@@ -1,22 +1,23 @@
 const router = require('express').Router();
 const Tasks = require('./model.js');
 
+
 router.get('/', (req, res, next) => {
-    try {
-        res.json({message: "get tasks is working"})
-    }
-    catch (err) {
-        next(err)
-    }
+    Tasks.getTasks()
+         .then(tasksArray => {
+             const tasks = tasksArray.map(task => {
+                 return {
+                     ...task,
+                     task_completed: (task.task_completed===1) ? true : false
+                 }
+             })
+             res.status(200).json(tasks)
+         })
+         .catch(err => next(err))
 })
 
 router.post('/', (req, res, next) => {
-    try{
-        res.json({message: "post new task is working"})
-    }
-    catch (err) {
-        next(err)
-    }
+    
 })
 
 
