@@ -1,22 +1,37 @@
 const router = require('express').Router();
 const Projects = require('./model.js');
 
-router.get('/', async (req, res, next) => {
-    try {
-        const projects = await Projects.getProjects();
-        res.json(projects)
-    }
-    catch (err) {
-        next(err)
-    }
+router.get('/', (req, res, next) => {
+  
+    Projects.getProjects()
+            .then(array => {
+                const projects = array.map(project => {
+                    return {
+                        ...project,
+                        project_completed: (project.project_completed===1) ? true : false
+                    }
+                })
+                res.status(200).json(projects)
+            })
+            .catch(err => next(err)) 
 })
 
 router.post('/', (req, res, next) => {
-    try{
-        res.json({message: "post new project is working"})
+    const {project_name} = req.body
+
+    if(!project_name) {
+        res.status(404).json({message: "project name is required"})
     }
-    catch (err) {
-        next(err)
+    else {
+        Projects.createNewProject(req.body)
+                .then(object => {
+                    const newProject = {
+                        ...object,
+                        project_completed: (object.project_completed===1) ? true : false
+                    }
+                    res.status(201).json(newProject)
+                })
+                .catch(err => next(err))
     }
 })
 
