@@ -1,6 +1,6 @@
 const db = require('../../data/dbConfig.js');
 
-async function getProjects() {
+function getProjects() {
     return db('projects');
 }
 

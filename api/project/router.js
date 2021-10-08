@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const Projects = require('./model.js');
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
-        res.json({message: "get projects is working"})
+        const projects = await Projects.getProjects();
+        res.json(projects)
     }
     catch (err) {
         next(err)
