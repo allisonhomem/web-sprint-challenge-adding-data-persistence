@@ -3,20 +3,27 @@ const Resources = require('./model.js');
 
 
 router.get('/', (req, res, next) => {
-    try {
-        res.json({message: "get resources is working"})
-    }
-    catch (err) {
-        next(err)
-    }
+    Resources.getResources()
+             .then(resources => {
+                 res.status(200).json(resources)
+             })
+             .catch(err => next(err))
 })
 
-router.post('/', (req, res, next) => {
-    try{
-        res.json({message: "post new resource is working"})
+router.post('/', async (req, res, next) => {
+    const {resource_name} = req.body
+
+    const resourceName = await Resources.getResourceByName(resource_name)
+
+    if(resourceName){
+        res.status(400).json({message: "that resource already exists"})
     }
-    catch (err) {
-        next(err)
+    else {
+        Resources.createNewResource(req.body)
+                 .then(newResource => {
+                     res.status(201).json(newResource)
+                 })
+                 .catch(err => next(err))
     }
 })
 

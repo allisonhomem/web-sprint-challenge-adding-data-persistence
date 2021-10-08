@@ -17,10 +17,18 @@ const resources = [
     }
 ]
 
+const tasks = [
+    {
+
+    }
+]
+
 exports.projects = projects;
 exports.resources = resources;
+exports.tasks = tasks;
 
 exports.seed = async function (knex) {
     await knex('projects').insert(projects);
     await knex('resources').insert(resources);
+    await knex('tasks').insert(tasks);
 }
