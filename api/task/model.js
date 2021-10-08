@@ -6,7 +6,7 @@ async function getTasks() {
 }
 
 async function getTaskById(task_id) {
-    return db('Tasks').where('task_id', task_id).first();
+    return db('tasks').where('task_id', task_id).first();
 }
 
 async function createNewTask(newTask) {
